@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jonferreira/node-red-contrib-sftp.git"
+    "url": "git+https://github.com/dceejay/node-red-contrib-sftp.git"
   },
   "keywords": [
     "node-red",
@@ -28,7 +28,7 @@
   "contributors": ["@dceejay"],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/jonferreira/node-red-contrib-sftp/issues"
+    "url": "https://github.com/dceejay/node-red-contrib-sftp/issues"
   },
-  "homepage": "https://github.com/jonferreira/node-red-contrib-sftp#readme"
+  "homepage": "https://github.com/dceejay/node-red-contrib-sftp#readme"
 }
