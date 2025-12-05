@@ -24,8 +24,8 @@
       "sftp": "sftp.js"
     }
   },
-  "author": "Jónatas Ferreira",
-  "contributors": ["@dceejay"],
+  "author": "@dceejay",
+  "contributors": ["@jonferreira","@schattenmann"],
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/dceejay/node-red-contrib-sftp/issues"
