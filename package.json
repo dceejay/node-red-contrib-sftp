@@ -1,0 +1,34 @@
+{
+  "name": "@dceejay/node-red-contrib-sftp",
+  "version": "0.1.1",
+  "description": "An SFTP client for node-red, a wrapper for ssh2-sftp-client",
+  "main": "sftp.js",
+  "scripts": {
+  },
+  "dependencies": {
+    "ssh2-sftp-client": "^12.0.1"
+  },
+  "bundledDependencies": [
+    "ssh2-sftp-client"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonferreira/node-red-contrib-sftp.git"
+  },
+  "keywords": [
+    "node-red",
+    "sftp"
+  ],
+  "node-red": {
+    "nodes": {
+      "sftp": "sftp.js"
+    }
+  },
+  "author": "Jónatas Ferreira",
+  "contributors": ["@dceejay"],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/jonferreira/node-red-contrib-sftp/issues"
+  },
+  "homepage": "https://github.com/jonferreira/node-red-contrib-sftp#readme"
+}

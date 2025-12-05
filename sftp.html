@@ -1,0 +1,251 @@
+<!-- CREDENTIALS -->
+
+<script type="text/html" data-template-name="SFTP-credentials">
+	<div class="form-row">
+        <label for="node-config-input-host"><i class="fa fa-globe"></i> Host</label>
+        <input type="text" id="node-config-input-host">
+    </div>
+	<div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-globe"></i> Port</label>
+        <input type="text" id="node-config-input-port">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-username"><i class="fa fa-user"></i> Username</label>
+        <input type="text" id="node-config-input-username">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-password"><i class="fa fa-user"></i> Password</label>
+        <input type="password" id="node-config-input-password">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('SFTP-credentials',{
+        category: 'config',
+        defaults: {
+            host:     { value:"127.0.0.1" },
+            port:     { value:"22" },
+            username:     { value:"" },
+            password:  { value:"" }
+        },
+        label: function() {
+            return this.username+"@"+this.host || "";
+        }
+    });
+
+    RED.nodes.registerType('SFTP-main',{
+        category: 'storage',
+        color:    '#E9967A',
+		paletteLabel: "SFTP",
+        defaults: {
+            name: { value:"" },
+            path:  { value:"/" },
+            method:  { value:"" },
+            remoteFilePath:  { value:"/" },
+            localFilePath:  { value:"/" },
+            remoteDestPath:  { value:"/" },
+            useCompression:  { value:"" },
+            encoding:  { value:"" },
+            mode:  { value:"" },
+            recursive:  { value:false },
+            server:  { type:"SFTP-credentials", required:true }
+        },
+        inputs:  1,
+        outputs: 1,
+        icon: "white-globe.png",
+        label: function() {
+            var sftpNode = RED.nodes.node(this.server);
+            return this.name || "SFTP" + (sftpNode ? ":"+sftpNode.label() : "" )
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+		oneditprepare: function() {
+			$("#node-input-method").change(function() {
+                if ($("#node-input-method").val() === "list") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().hide();
+                    $("#node-input-remoteDestPath").parent().hide();
+                    $("#node-input-mode").parent().hide();
+                    $("#node-input-useCompression").parent().hide();
+                    $("#node-input-encoding").parent().hide();
+                    $("#node-input-recursive").parent().hide();
+                } else if ($("#node-input-method").val() === "get") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().hide();
+                    $("#node-input-remoteDestPath").parent().hide();
+                    $("#node-input-mode").parent().hide();
+                    $("#node-input-useCompression").parent().show();
+                    $("#node-input-encoding").parent().show();
+					$("#node-input-recursive").parent().hide();
+                } else if ($("#node-input-method").val() === "put") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().show();
+                    $("#node-input-remoteDestPath").parent().hide();
+                    $("#node-input-mode").parent().hide();
+                    $("#node-input-useCompression").parent().show();
+                    $("#node-input-encoding").parent().show();
+					$("#node-input-recursive").parent().hide();
+                } else if ($("#node-input-method").val() === "mkdir") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().hide();
+                    $("#node-input-remoteDestPath").parent().hide();
+                    $("#node-input-mode").parent().hide();
+                    $("#node-input-useCompression").parent().hide();
+                    $("#node-input-encoding").parent().hide();
+					$("#node-input-recursive").parent().show();
+                } else if ($("#node-input-method").val() === "rmdir") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().hide();
+                    $("#node-input-remoteDestPath").parent().hide();
+                    $("#node-input-mode").parent().hide();
+                    $("#node-input-useCompression").parent().hide();
+                    $("#node-input-encoding").parent().hide();
+					$("#node-input-recursive").parent().show();
+                } else if ($("#node-input-method").val() === "delete") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().hide();
+                    $("#node-input-remoteDestPath").parent().hide();
+                    $("#node-input-mode").parent().hide();
+                    $("#node-input-useCompression").parent().hide();
+                    $("#node-input-encoding").parent().hide();
+					$("#node-input-recursive").parent().hide();
+                } else if ($("#node-input-method").val() === "rename") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().hide();
+                    $("#node-input-remoteDestPath").parent().show();
+                    $("#node-input-mode").parent().hide();
+                    $("#node-input-useCompression").parent().hide();
+                    $("#node-input-encoding").parent().hide();
+					$("#node-input-recursive").parent().hide();
+                } else if ($("#node-input-method").val() === "chmod") {
+                    $("#node-input-remoteFilePath").parent().show();
+                    $("#node-input-localFilePath").parent().hide();
+                    $("#node-input-remoteDestPath").parent().hide();
+                    $("#node-input-mode").parent().show();
+                    $("#node-input-useCompression").parent().hide();
+                    $("#node-input-encoding").parent().hide();
+					$("#node-input-recursive").parent().hide();
+                }
+            });
+		}
+    });
+</script>
+
+<script type="text/html" data-template-name="SFTP-main">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-globe"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+
+	<div class="form-row">
+        <label for="node-input-method"><i class="icon-tag"></i> Method</label>
+        <select id="node-input-method" >
+            <option value='list'>List</option>
+            <option value='get'>Get</option>
+            <option value='put'>Put</option>
+            <option value='mkdir'>Mkdir</option>
+            <option value='rmdir'>Rmdir</option>
+            <option value='delete'>Delete</option>
+            <option value='rename'>Rename</option>
+            <option value='chmod'>Chmod</option>
+        </select>
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-remoteFilePath"><i class="icon-tag"></i> Remote Path</label>
+        <input type="text" id="node-input-remoteFilePath" placeholder="Remote File Path">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-localFilePath"><i class="icon-tag"></i> Local Path</label>
+        <input type="text" id="node-input-localFilePath" placeholder="Local File Path">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-remoteDestPath"><i class="icon-tag"></i> Remote Destination Path</label>
+        <input type="text" id="node-input-remoteDestPath" placeholder="Remote Destination Path">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-mode"><i class="icon-tag"></i> Mode</label>
+        <input type="text" id="node-input-mode" placeholder="Mode">
+    </div>
+
+    <!-- <div class="form-row">
+        <label for="node-input-useCompression"><i class="icon-tag"></i> Use Compression</label>
+        <input type="text" id="node-input-useCompression" placeholder="Use Compression">
+    </div> -->
+
+    <div class="form-row">
+        <label for="node-input-encoding"><i class="icon-tag"></i> Encoding</label>
+        <input type="text" id="node-input-encoding" placeholder="utf8, or leave blank for binary">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-recursive"><i class="icon-tag"></i> Recursive</label>
+        <input type="text" id="node-input-recursive" placeholder="false">
+    </div>
+
+</script>
+
+<script type="text/html" data-help-name="SFTP-main">
+<p>An SFTP client for node-red, a wrapper for <a href="https://github.com/jyu213/ssh2-sftp-client">ssh2-sftp-client</a></p>
+<p>Each variable can be overriden with msg.xxx</p>
+<h3><a id="user-content-list" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#list" aria-hidden="true"></a>List</h3>
+<p>Retrieves a directory listing.</p>
+<pre><code>sftp.list(remoteFilePath)
+</code></pre>
+<p>directory info:</p>
+<pre><code>type: // file type(-, d, l)
+name: // file name
+size: // file size
+modifyTime: // file timestamp of modified time
+accessTime: // file timestamp of access time
+rights: {
+    user:
+    group:
+    other:
+},
+owner: // user ID
+group: // group ID
+</code></pre>
+<h3><a id="user-content-get" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#get" aria-hidden="true"></a>Get</h3>
+<p>get a new readable stream for path. The encoding is passed to Node Stream (<a href="https://nodejs.org/api/stream.html" rel="nofollow">https://nodejs.org/api/stream.html</a>) and it controls how the content is encoded. For example, when downloading binary data, 'null' should be passed (check node stream documentation). Defaults to 'utf8'.</p>
+<pre><code>sftp.get(remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+</code></pre>
+<h3><a id="user-content-put" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#put" aria-hidden="true"></a>Put</h3>
+<p>upload a file. it can be <code>localPath</code> or <code>Buffer</code> or <code>Stream</code>.</p>
+<pre><code>sftp.put(localFilePath, remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+sftp.put(Buffer, remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+sftp.put(Stream, remoteFilePath, [useCompression], [encoding], [addtionalOptions]);
+</code></pre>
+<h3><a id="user-content-mkdir" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#mkdir" aria-hidden="true"></a>Mkdir</h3>
+<p>create a new directory.</p>
+<pre><code>// recursive default is false, if true, it will create directory recursive
+sftp.mkdir(remoteFilePath, recursive);
+</code></pre>
+<h3><a id="user-content-rmdir" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#rmdir" aria-hidden="true"></a>Rmdir</h3>
+<p>remove the directory or file.</p>
+<pre><code>// recursive default is false, if true, it will remove directory recursive even if is not empty
+sftp.rmdir(localPath, recursive);
+</code></pre>
+<h3><a id="user-content-delete" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#delete" aria-hidden="true"></a>Delete</h3>
+<p>delete file.</p>
+<pre><code>sftp.delete(remoteFilePath);
+</code></pre>
+<h3><a id="user-content-rename" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#rename" aria-hidden="true"></a>Rename</h3>
+<p>rename remoteSourcePath to remoteDestPath (removes remoteSourcePath).</p>
+<pre><code>sftp.rename(remoteSourcePath, remoteDestPath);
+</code></pre>
+<h3><a id="user-content-chmod" class="anchor" href="https://github.com/jyu213/ssh2-sftp-client#chmod" aria-hidden="true"></a>Chmod</h3>
+<p>modify rights to remoteDestPath file</p>
+<pre><code>sftp.chmod(remoteDestPath, mode);
+</code></pre>
+
+</script>
