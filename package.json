@@ -1,6 +1,6 @@
 {
   "name": "@dceejay/node-red-contrib-sftp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An SFTP client for node-red, a wrapper for ssh2-sftp-client",
   "main": "sftp.js",
   "scripts": {

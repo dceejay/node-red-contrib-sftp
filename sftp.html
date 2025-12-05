@@ -23,13 +23,15 @@
     RED.nodes.registerType('SFTP-credentials',{
         category: 'config',
         defaults: {
-            host:     { value:"127.0.0.1" },
-            port:     { value:"22" },
-            username:     { value:"" },
-            password:  { value:"" }
+            host: { value: "127.0.0.1" },
+            port: { value: "22" },
+        },
+        credentials: {
+            username: { type: "text" },
+            password: { type: "password" }
         },
         label: function() {
-            return this.username+"@"+this.host || "";
+            return this.host || "";
         }
     });
 
