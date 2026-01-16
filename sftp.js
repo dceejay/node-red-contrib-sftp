@@ -9,7 +9,6 @@ module.exports = function (RED) {
         this.port = config.port;
         this.username = this.credentials.username;
         this.password = this.credentials.password;
-        var node = this;
     };
 
     RED.nodes.registerType("SFTP-credentials", SFTPCredentialsNode, {
@@ -34,17 +33,25 @@ module.exports = function (RED) {
             return function (msg) {
                 node.status({
                     fill: "grey",
-                    shape: "dot",
+                    shape: "ring",
                     text: "connecting"
                 });
                 var sftp = new Client();
 
-                sftp.connect({
+                const config = {
                     host: node.server.host,
                     port: node.server.port,
                     username: node.server.username,
                     password: node.server.password
-                }).then(() => {
+                };
+                // config.debug = m => {
+                //     if (m.startsWith('Handshake')) {
+                //         console.log(m);
+                //     }
+                // };
+
+                sftp.connect(config)
+                .then(() => {
                     this.method = msg.method || node.method;
                     this.remoteFilePath = msg.remoteFilePath || node.remoteFilePath;
                     this.useCompression = msg.useCompression || node.useCompression;
@@ -83,9 +90,9 @@ module.exports = function (RED) {
                 }).then((data) => {
                     sftp.end();
                     node.status({
-                        shape: "dot",
+                        shape: "ring",
                         fill: "green",
-                        text: "Success"
+                        text: "OK: "+this.method
                     });
 
                     msg.payload = data;
@@ -96,11 +103,12 @@ module.exports = function (RED) {
                     node.status({
                         shape: "dot",
                         fill: "red",
-                        text: "Error: " + err
+                        text: "" + err
                     });
-                    msg.payload = err;
-                    msg.error = true;
-                    node.send(msg);
+                    // msg.payload = err;
+                    // msg.error = true;
+                    // node.send(msg);
+                    node.error(err,msg);
                 });
             };
         })(this));
